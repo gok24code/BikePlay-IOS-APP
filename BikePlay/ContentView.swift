@@ -94,7 +94,7 @@ struct ContentView: View {
                             Text("ORT. HIZ")
                                 .font(.system(size: 10, weight: .bold, design: .rounded))
                                 .foregroundColor(.gray)
-                            Text(String(format: "%.0f K/S", locationManager.averageSpeed))
+                            Text(String(format: "%.0f KM/S", locationManager.averageSpeed))
                                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                                 .foregroundColor(.white)
                         }
