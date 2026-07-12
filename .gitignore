@@ -1,0 +1,32 @@
+# Xcode'un kullanıcıya özel kişisel ayarları (Apple ID, Team ID ve Sertifika izleri buradadır)
+xcuserdata/
+*.xcuserdatad/
+*.xcuserstate
+
+# Xcode Derleme Önbelleği ve Geçici Dosyalar
+DerivedData/
+build/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# İşletim Sistemi ve Dosya Sistemi Kalıntıları
+.DS_Store
+*.swp
+*~
+lock
+.ionide/
+
+# Paket Yönetimi (Eğer CocoaPods kullanıyorsan kilitli kalmalı, Swift Package Manager zaten otomatik yönetilir)
+.Pods/
+# Pods/ // Eğer pod'ları repoya eklemek istemiyorsan başındaki diyezi kaldırabilirsin
+
+# Swift Package Manager Önbelleği
+.build/
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+
+# Gelecekte ekleyebileceğin Gizli Çevre Değişkenleri (API Anahtarları için)
+.env
+.env.*
+*.xcconfig
