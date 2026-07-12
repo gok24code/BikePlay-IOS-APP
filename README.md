@@ -46,6 +46,6 @@ Sürüş esnasında dikkati dağıtmayacak, karanlık mod (Dark Mode) odaklı ve
 
 * **Göktuğ Toyguç** - Computer Engineering Student
 * **GitHub:** [@gok24code](https://github.com/gok24code)
-* **Web:** [mywebsite](https://gok2.web.tr)
+* **Web:** [mywebsite](https://gok24code.github.io)
 ---
 *Bu proje, bisiklet gidonunda Xcode konsolunun "Build Success" sesini duymak ve sürüşü daha akıllı hale getirmek için geliştirilmiştir.*
