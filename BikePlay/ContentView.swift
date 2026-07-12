@@ -159,7 +159,6 @@ struct ContentView: View {
                     Image(systemName: "bicycle")
                         .font(.system(size: 85, weight: .ultraLight))
                         .foregroundColor(.green)
-                    // Göktuğ, DaVinci Resolve animasyonlarındaki gibi parlamayı gölgeyle veriyoruz:
                         .shadow(color: .green.opacity(0.8), radius: 20)
                         .scaleEffect(logoScale)
                         .opacity(logoOpacity)
