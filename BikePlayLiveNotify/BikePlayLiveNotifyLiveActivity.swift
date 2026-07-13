@@ -12,7 +12,7 @@ struct BikePlayLiveNotifyLiveActivity: Widget {
                         Image(systemName: "bicycle")
                             .foregroundColor(.green)
                             .font(.system(size: 14, weight: .bold))
-                        Text("Bike PLay Live Activity")
+                        Text("Bike Play")
                             .font(.system(size: 11, weight: .black))
                             .foregroundColor(.green)
                     }
@@ -24,7 +24,7 @@ struct BikePlayLiveNotifyLiveActivity: Widget {
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text("ANLIK HIZ")
+                    Text("Current Speed")
                         .font(.system(size: 10, weight: .bold))
                         .foregroundColor(.gray)
                     Text(String(format: "%.1f", context.state.currentSpeed))
@@ -52,7 +52,7 @@ struct BikePlayLiveNotifyLiveActivity: Widget {
                         .font(.system(size: 13, weight: .bold))
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("LUMI Sürüş Bilgisayarı Aktif")
+                    Text("Bike Play Current Trip")
                         .font(.system(size: 11))
                         .foregroundColor(.gray)
                 }
