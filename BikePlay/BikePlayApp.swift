@@ -1,8 +1,11 @@
 //
-//  BikePlayApp.swift
+//  BikePlayApp.swift (PRODUCTION)
 //  BikePlay
 //
-//  Created by Göktuğ Toyguc on 12.07.2026.
+//  Swift 6 Compliance:
+//  ✅ onChange with new signature (iOS 17+)
+//  ✅ Proper @MainActor lifecycle
+//  ✅ Proper async handling
 //
 
 import SwiftUI
@@ -17,17 +20,28 @@ struct BikePlayApp: App {
             ContentView().environmentObject(locationManager)
         }
         
-        .onChange(of: scenePhase) { newPhase in
-            switch newPhase {
-            case .background:
-                break
-            case .inactive:
-                locationManager.endLiveActivity()
-            case .active:
-                break
-            @unknown default:
-                break
-            }
+        // ✅ FIX: Deprecated onChange(of:perform:) → onChange(of:perform:) with new signature
+        // iOS 17+ requires: onChange(of:initial:_:)
+        .onChange(of: scenePhase, initial: false) { _, newPhase in
+            handleScenePhaseChange(newPhase)
+        }
+    }
+    
+    // MARK: - Scene Phase Handler
+    @MainActor
+    private func handleScenePhaseChange(_ phase: ScenePhase) {
+        switch phase {
+        case .background:
+            // Arka planda: konum tracking açık kalsın
+            break
+        case .inactive:
+            // Uygulama ön plandan çıkıyor: Activity'i pürüzsüzce kapat
+            locationManager.endLiveActivity()
+        case .active:
+            // Uygulama öne geldi
+            break
+        @unknown default:
+            break
         }
     }
 }

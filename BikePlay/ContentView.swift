@@ -253,45 +253,7 @@ struct ContentView: View {
         VStack(spacing: 8) {
             // 1. ÜSTTEKİ SONUÇ LİSTESİ (Pürüzsüz geçişli hale getirildi)
             if isSearchExpanded && !locationManager.searchResults.isEmpty && !searchQuery.isEmpty {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 0) {
-                        ForEach(locationManager.searchResults, id: \.self) { item in
-                            Button(action: {
-                                let coord = item.placemark.coordinate
-                                Task {
-                                    await locationManager.calculateRoute(to: coord)
-                                }
-                                searchQuery = ""
-                                locationManager.searchResults = []
-                                withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
-                                    isSearchExpanded = false
-                                }
-                            }) {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(item.name ?? "Bilinmeyen Yer")
-                                        .font(.system(size: 14, weight: .bold))
-                                        .foregroundColor(.white)
-                                }
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 16)
-                            }
-                            Divider().background(Color.gray.opacity(0.3))
-                        }
-                    }
-                    .background(Color.black.opacity(0.9))
-                    .cornerRadius(12)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.green.opacity(0.3), lineWidth: 1)
-                    )
-                    .padding(.horizontal, 0)
-                }
-                .frame(maxHeight: 180)
-                .frame(width: 280, alignment: .leading)
-                .transition(.asymmetric(
-                    insertion: .move(edge: .bottom).combined(with: .opacity),
-                    removal: .move(edge: .bottom).combined(with: .opacity)
-                ))
+                searchResultsList()
             }
             
             // 2. ALTTAKİ ARAMA KUTUSU (Klavye takılması engellenen optimize tasarım)
@@ -305,7 +267,8 @@ struct ContentView: View {
                         .foregroundColor(.white)
                         .autocorrectionDisabled()
                         .transition(.opacity)
-                        .onChange(of: searchQuery) { newValue in
+                        // ✅ FIX: Deprecated onChange(of:perform:) → onChange with new signature (iOS 17+)
+                        .onChange(of: searchQuery) { _, newValue in
                             searchTask?.cancel()
                             searchTask = Task {
                                 try? await Task.sleep(nanoseconds: 400_000_000)
@@ -355,6 +318,57 @@ struct ContentView: View {
         .padding([.leading], 24).padding([.top],10  )
         .animation(.spring(response: 0.35, dampingFraction: 0.75), value: locationManager.searchResults)
         .animation(.spring(response: 0.35, dampingFraction: 0.75), value: isSearchExpanded)
+    }
+
+    // Arama sonuç listesi — büyük body ifadesini bölerek type-check süresini düşürür
+    @ViewBuilder
+    private func searchResultsList() -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                ForEach(locationManager.searchResults, id: \.self) { item in
+                    searchResultRow(for: item)
+                    Divider().background(Color.gray.opacity(0.3))
+                }
+            }
+            .background(Color.black.opacity(0.9))
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.green.opacity(0.3), lineWidth: 1)
+            )
+            .padding(.horizontal, 0)
+        }
+        .frame(maxHeight: 180)
+        .frame(width: 280, alignment: .leading)
+        .transition(.asymmetric(
+            insertion: .move(edge: .bottom).combined(with: .opacity),
+            removal: .move(edge: .bottom).combined(with: .opacity)
+        ))
+    }
+
+    // Tek bir arama sonucu satırı
+    @ViewBuilder
+    private func searchResultRow(for item: MKMapItem) -> some View {
+        Button(action: {
+            // Modern API: MKMapItem.location (deprecated placemark yerine)
+            let coord = item.location.coordinate
+            Task {
+                await locationManager.calculateRoute(to: coord)
+            }
+            searchQuery = ""
+            locationManager.searchResults = []
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                isSearchExpanded = false
+            }
+        }) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(item.name ?? "Bilinmeyen Yer")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.white)
+            }
+            .padding(.vertical, 10)
+            .padding(.horizontal, 16)
+        }
     }
 }
 

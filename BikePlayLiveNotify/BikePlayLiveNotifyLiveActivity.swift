@@ -27,11 +27,9 @@ struct BikePlayLiveNotifyLiveActivity: Widget {
                     Text("Current Speed")
                         .font(.system(size: 10, weight: .bold))
                         .foregroundColor(.gray)
-                    Text(String(format: "%.1f", context.state.currentSpeed))
+                    // ✅ FIX: '+' operator deprecated → Use string interpolation (iOS 26+)
+                    Text("\(String(format: "%.1f", context.state.currentSpeed)) km/h")
                         .font(.system(size: 32, weight: .black))
-                        .foregroundColor(.green) +
-                    Text(" km/s")
-                        .font(.system(size: 14, weight: .bold))
                         .foregroundColor(.green)
                 }
             }
