@@ -32,7 +32,7 @@ Sürüş esnasında dikkati dağıtmayacak, karanlık mod (Dark Mode) odaklı ve
 ## 📸 Ekran Görüntüleri
 |UYGULAMA ARAYÜZÜ|SPLASH SCREEN|
 |---|---|
-| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/Ekran%20Resmi%202026-07-12%2006.12.22.png" width= "250"> | <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/Ekran%20Resmi%202026-07-12%2006.12.34.png" width = "250">|
+| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/Ekran%20Resmi%202026-07-12%2006.12.22.png" width= "250"> | <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/Ekran%20Resmi%202026-07-12%2006.12.34.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5970.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5969.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5968.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5956.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5955.png" width = "250">|
 
 ---
 
