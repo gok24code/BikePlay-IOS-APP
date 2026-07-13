@@ -236,10 +236,10 @@ struct ContentView: View {
         }
         .alert(isPresented: $locationManager.isRouteCompleted) {
             Alert(
-                title: Text("VARAŞ NOKTASINA ULAŞILDI")
+                title: Text("ROUTE COMPLETED")
                     .font(.system(.headline, design: .monospaced)),
-                message: Text("Rota başarıyla tamamlandı. LUMI iyi günler diler, aslanım!"),
-                dismissButton: .default(Text("Tamam")) {
+                message: Text("See you in other routes next time!"),
+                dismissButton: .default(Text("OK")) {
                     // Tamam butonuna basınca durumu sıfırlıyoruz ki bir sonraki rotada yine çalışsın
                     locationManager.isRouteCompleted = false
                 }
