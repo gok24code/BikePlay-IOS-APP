@@ -6,19 +6,89 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9B0F3A8F3004755700FB30D4 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B0F3A8E3004755700FB30D4 /* WidgetKit.framework */; };
+		9B0F3A913004755700FB30D4 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B0F3A903004755700FB30D4 /* SwiftUI.framework */; };
+		9B0F3AA23004755800FB30D4 /* BikePlayLiveNotifyExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9B0F3A8C3004755700FB30D4 /* BikePlayLiveNotifyExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9B0F3AA03004755800FB30D4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9B7D28DC30030D8000A63F49 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9B0F3A8B3004755700FB30D4;
+			remoteInfo = BikePlayLiveNotifyExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9B0F3AA33004755800FB30D4 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9B0F3AA23004755800FB30D4 /* BikePlayLiveNotifyExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		9B0F3A8C3004755700FB30D4 /* BikePlayLiveNotifyExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BikePlayLiveNotifyExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B0F3A8E3004755700FB30D4 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		9B0F3A903004755700FB30D4 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		9B7D28E430030D8000A63F49 /* BikePlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BikePlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9B0F3AA63004755800FB30D4 /* Exceptions for "BikePlayLiveNotify" folder in "BikePlayLiveNotifyExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 9B0F3A8B3004755700FB30D4 /* BikePlayLiveNotifyExtension */;
+		};
+		9B0F3AAB3004773500FB30D4 /* Exceptions for "BikePlay" folder in "BikePlayLiveNotifyExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				CockpitAttributes.swift,
+			);
+			target = 9B0F3A8B3004755700FB30D4 /* BikePlayLiveNotifyExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		9B0F3A923004755700FB30D4 /* BikePlayLiveNotify */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9B0F3AA63004755800FB30D4 /* Exceptions for "BikePlayLiveNotify" folder in "BikePlayLiveNotifyExtension" target */,
+			);
+			path = BikePlayLiveNotify;
+			sourceTree = "<group>";
+		};
 		9B7D28E630030D8000A63F49 /* BikePlay */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9B0F3AAB3004773500FB30D4 /* Exceptions for "BikePlay" folder in "BikePlayLiveNotifyExtension" target */,
+			);
 			path = BikePlay;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9B0F3A893004755700FB30D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B0F3A913004755700FB30D4 /* SwiftUI.framework in Frameworks */,
+				9B0F3A8F3004755700FB30D4 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9B7D28E130030D8000A63F49 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -29,10 +99,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B0F3A8D3004755700FB30D4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9B0F3A8E3004755700FB30D4 /* WidgetKit.framework */,
+				9B0F3A903004755700FB30D4 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9B7D28DB30030D8000A63F49 = {
 			isa = PBXGroup;
 			children = (
 				9B7D28E630030D8000A63F49 /* BikePlay */,
+				9B0F3A923004755700FB30D4 /* BikePlayLiveNotify */,
+				9B0F3A8D3004755700FB30D4 /* Frameworks */,
 				9B7D28E530030D8000A63F49 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				9B7D28E430030D8000A63F49 /* BikePlay.app */,
+				9B0F3A8C3004755700FB30D4 /* BikePlayLiveNotifyExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +130,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9B0F3A8B3004755700FB30D4 /* BikePlayLiveNotifyExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9B0F3AA73004755800FB30D4 /* Build configuration list for PBXNativeTarget "BikePlayLiveNotifyExtension" */;
+			buildPhases = (
+				9B0F3A883004755700FB30D4 /* Sources */,
+				9B0F3A893004755700FB30D4 /* Frameworks */,
+				9B0F3A8A3004755700FB30D4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9B0F3A923004755700FB30D4 /* BikePlayLiveNotify */,
+			);
+			name = BikePlayLiveNotifyExtension;
+			packageProductDependencies = (
+			);
+			productName = BikePlayLiveNotifyExtension;
+			productReference = 9B0F3A8C3004755700FB30D4 /* BikePlayLiveNotifyExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		9B7D28E330030D8000A63F49 /* BikePlay */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9B7D28EF30030D8100A63F49 /* Build configuration list for PBXNativeTarget "BikePlay" */;
@@ -55,10 +159,12 @@
 				9B7D28E030030D8000A63F49 /* Sources */,
 				9B7D28E130030D8000A63F49 /* Frameworks */,
 				9B7D28E230030D8000A63F49 /* Resources */,
+				9B0F3AA33004755800FB30D4 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9B0F3AA13004755800FB30D4 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				9B7D28E630030D8000A63F49 /* BikePlay */,
@@ -80,6 +186,9 @@
 				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
+					9B0F3A8B3004755700FB30D4 = {
+						CreatedOnToolsVersion = 26.6;
+					};
 					9B7D28E330030D8000A63F49 = {
 						CreatedOnToolsVersion = 26.6;
 					};
@@ -100,11 +209,19 @@
 			projectRoot = "";
 			targets = (
 				9B7D28E330030D8000A63F49 /* BikePlay */,
+				9B0F3A8B3004755700FB30D4 /* BikePlayLiveNotifyExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9B0F3A8A3004755700FB30D4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9B7D28E230030D8000A63F49 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +232,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9B0F3A883004755700FB30D4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9B7D28E030030D8000A63F49 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +248,75 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9B0F3AA13004755800FB30D4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9B0F3A8B3004755700FB30D4 /* BikePlayLiveNotifyExtension */;
+			targetProxy = 9B0F3AA03004755800FB30D4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		9B0F3AA43004755800FB30D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QX85P52YPR;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BikePlayLiveNotify/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BikePlayLiveNotify;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gok24code.BikePlay.BikePlayLiveNotify;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9B0F3AA53004755800FB30D4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QX85P52YPR;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BikePlayLiveNotify/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BikePlayLiveNotify;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gok24code.BikePlay.BikePlayLiveNotify;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9B7D28ED30030D8100A63F49 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -258,6 +450,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Çalan şarkı bilgisini ekranda göstermek için izin gerekiyor.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Hız Hesabı için GPS verilerinize ihtiyaç var.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -292,6 +485,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "Çalan şarkı bilgisini ekranda göstermek için izin gerekiyor.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Hız Hesabı için GPS verilerinize ihtiyaç var.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -317,6 +511,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9B0F3AA73004755800FB30D4 /* Build configuration list for PBXNativeTarget "BikePlayLiveNotifyExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B0F3AA43004755800FB30D4 /* Debug */,
+				9B0F3AA53004755800FB30D4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9B7D28DF30030D8000A63F49 /* Build configuration list for PBXProject "BikePlay" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

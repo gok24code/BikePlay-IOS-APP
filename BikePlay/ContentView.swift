@@ -8,10 +8,12 @@ struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var weatherManager = WeatherManager()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
-    // Animasyon kontrolü için yeni değişkenlerimiz
+    @State private var searchQuery: String = ""
     @State private var isActive = false
     @State private var logoScale: CGFloat = 0.7
     @State private var logoOpacity: Double = 0.0
+    @State private var searchTask: Task<Void, Never>? = nil
+    @State private var isSearchExpanded: Bool = false
     var body: some View {
         ZStack {
             
@@ -105,23 +107,62 @@ struct ContentView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal)
                     
-                    Map(position: $position) {
-                        UserAnnotation()
-                    }
-                    .frame(height: 300)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .padding(.horizontal)
-                    .mapControls {
-                        MapUserLocationButton() // Kullanıcıyı merkeze alma butonu
-                        MapCompass() // Pusula
-                    }
-                    .preferredColorScheme(.dark)
                     
-                    
+                    //MAP------------------------
+                    ZStack(alignment: .topLeading){
+                        MapReader { reader in
+                            Map(position: $position) {
+                                UserAnnotation{
+                                    ZStack{
+                                        Circle().fill(Color.green.opacity(0.2)).frame(width: 40, height: 40)
+                                        Circle().stroke(Color.green, lineWidth: 2)
+                                            .frame(width: 26, height: 26)
+                                        Circle()
+                                            .fill(Color.black)
+                                            .frame(width: 22, height: 22)
+                                        Image(systemName: "bicycle")
+                                            .font(Font.system(size: 12, weight: .bold, design: .rounded))
+                                            .foregroundColor(Color.green)
+                                    }
+                                }
+                                
+                                if !locationManager.remainingRouteCoordinates.isEmpty{
+                                    MapPolyline(coordinates: locationManager.remainingRouteCoordinates)
+                                        .stroke(LinearGradient(colors:[Color.green,Color.cyan],startPoint: .leading, endPoint: .trailing), style: StrokeStyle(
+                                            lineWidth: 7,
+                                            lineCap: .round,
+                                            lineJoin: .round,
+                                            
+                                        ))
+                                    MapPolyline(coordinates:   locationManager.remainingRouteCoordinates)
+                                            .stroke(Color.green.opacity(0.3), lineWidth: 12)
+                                }
+                            }
+                            .frame(height: 300)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .padding(.horizontal)
+                            .mapControls {
+                                MapUserLocationButton()
+                                MapCompass()
+                            }
+                            .preferredColorScheme(.dark)
+                            .onTapGesture { screenPoint in
+                                // Ekranda tam olarak dokunduğun piksel noktasını (screenPoint)
+                                // Harita üzerindeki gerçek dünya koordinatına (enlem/boylam) hatasız çevirir
+                                if let coordinate = reader.convert(screenPoint, from: .local) {
+                                    Task {
+                                        await locationManager.calculateRoute(to: coordinate)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        //Location Search Bar.
+                        VStyleSearchOverlay()
+                    }
                     
                     Spacer()
                     
-                    // ALT BÖLÜM: MÜZİK KARTI (CarPlay Tarzı)
                     VStack() {
                         HStack {
                             Image(systemName: "speaker.wave.1.fill")
@@ -187,6 +228,133 @@ struct ContentView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .onAppear{
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+        .alert(isPresented: $locationManager.isRouteCompleted) {
+            Alert(
+                title: Text("VARAŞ NOKTASINA ULAŞILDI")
+                    .font(.system(.headline, design: .monospaced)),
+                message: Text("Rota başarıyla tamamlandı. LUMI iyi günler diler, aslanım!"),
+                dismissButton: .default(Text("Tamam")) {
+                    // Tamam butonuna basınca durumu sıfırlıyoruz ki bir sonraki rotada yine çalışsın
+                    locationManager.isRouteCompleted = false
+                }
+            )
+        }
+    }
+    
+    //Search bar Structure
+    @ViewBuilder
+    private func VStyleSearchOverlay() -> some View {
+        VStack(spacing: 8) {
+            // 1. ÜSTTEKİ SONUÇ LİSTESİ (Pürüzsüz geçişli hale getirildi)
+            if isSearchExpanded && !locationManager.searchResults.isEmpty && !searchQuery.isEmpty {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(locationManager.searchResults, id: \.self) { item in
+                            Button(action: {
+                                let coord = item.placemark.coordinate
+                                Task {
+                                    await locationManager.calculateRoute(to: coord)
+                                }
+                                searchQuery = ""
+                                locationManager.searchResults = []
+                                withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                                    isSearchExpanded = false
+                                }
+                            }) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(item.name ?? "Bilinmeyen Yer")
+                                        .font(.system(size: 14, weight: .bold))
+                                        .foregroundColor(.white)
+                                }
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 16)
+                            }
+                            Divider().background(Color.gray.opacity(0.3))
+                        }
+                    }
+                    .background(Color.black.opacity(0.9))
+                    .cornerRadius(12)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.green.opacity(0.3), lineWidth: 1)
+                    )
+                    .padding(.horizontal, 0)
+                }
+                .frame(maxHeight: 180)
+                .frame(width: 280, alignment: .leading)
+                .transition(.asymmetric(
+                    insertion: .move(edge: .bottom).combined(with: .opacity),
+                    removal: .move(edge: .bottom).combined(with: .opacity)
+                ))
+            }
+            
+            // 2. ALTTAKİ ARAMA KUTUSU (Klavye takılması engellenen optimize tasarım)
+            HStack {
+                if isSearchExpanded {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.green)
+                        .transition(.opacity)
+                    
+                    TextField("Search...", text: $searchQuery)
+                        .foregroundColor(.white)
+                        .autocorrectionDisabled()
+                        .transition(.opacity)
+                        .onChange(of: searchQuery) { newValue in
+                            searchTask?.cancel()
+                            searchTask = Task {
+                                try? await Task.sleep(nanoseconds: 400_000_000)
+                                if !Task.isCancelled {
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                        locationManager.searchPlaces(query: newValue)
+                                    }
+                                }
+                            }
+                        }
+                    
+                    Button(action: {
+                        searchQuery = ""
+                        locationManager.searchResults = []
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                            isSearchExpanded = false
+                        }
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                    .transition(.scale)
+                    
+                } else {
+                    Button(action: {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                            isSearchExpanded = true
+                        }
+                    }) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(.green)
+                            .padding(12)
+                    }
+                    .transition(.scale)
+                }
+            }
+            .padding(isSearchExpanded ? 12 : 0)
+            .background(Color.black.opacity(0.8))
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.green.opacity(0.5), lineWidth: 1)
+            )
+            .frame(maxWidth: isSearchExpanded ? 280 : 50, alignment: .leading)
+        }
+        .padding([.leading], 24).padding([.top],10  )
+        .animation(.spring(response: 0.35, dampingFraction: 0.75), value: locationManager.searchResults)
+        .animation(.spring(response: 0.35, dampingFraction: 0.75), value: isSearchExpanded)
     }
 }
 
