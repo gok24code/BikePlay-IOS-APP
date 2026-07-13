@@ -1,29 +1,27 @@
 import Foundation
 import CoreLocation
-internal import Combine // @Published ve ObservableObject için asıl kütüphane
-import SwiftUI // Ek garanti olarak kütüphaneyi bağlıyoruz
+internal import Combine
+import SwiftUI
 
 @MainActor
 class WeatherManager: ObservableObject {
     @Published var temperature: String = "--°C"
     @Published var conditionIcon: String = "cloud.sun.fill"
-    
+
     func fetchWeather(for coordinate: CLLocationCoordinate2D) async {
-        // Koordinatları dinamik olarak API'ye gömüyoruz
         let urlString = "https://api.open-meteo.com/v1/forecast?latitude=\(coordinate.latitude)&longitude=\(coordinate.longitude)&current=temperature_2m,weather_code"
-        
-        // Buradaki hata 'string:' parametresi ile düzeltildi
+
         guard let url = URL(string: urlString) else { return }
-        
+
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                let current = json["current"] as? [String: Any],
                let temp = current["temperature_2m"] as? Double,
                let weatherCode = current["weather_code"] as? Int {
-                
+
                 self.temperature = "\(Int(round(temp)))°C"
-                
+
                 switch weatherCode {
                 case 0: self.conditionIcon = "sun.max.fill"
                 case 1, 2, 3: self.conditionIcon = "cloud.sun.fill"

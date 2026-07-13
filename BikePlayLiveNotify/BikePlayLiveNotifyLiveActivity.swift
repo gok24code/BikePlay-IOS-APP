@@ -5,7 +5,6 @@ import SwiftUI
 struct BikePlayLiveNotifyLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: KokpitAttributes.self) { context in
-            // --- 1. KLASİK KİLİT EKRANI PANELİ ---
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 6) {
@@ -27,7 +26,6 @@ struct BikePlayLiveNotifyLiveActivity: Widget {
                     Text("Current Speed")
                         .font(.system(size: 10, weight: .bold))
                         .foregroundColor(.gray)
-                    // ✅ FIX: '+' operator deprecated → Use string interpolation (iOS 26+)
                     Text("\(String(format: "%.1f", context.state.currentSpeed)) km/h")
                         .font(.system(size: 32, weight: .black))
                         .foregroundColor(.green)
@@ -37,7 +35,6 @@ struct BikePlayLiveNotifyLiveActivity: Widget {
             .background(Color.black)
             
         } dynamicIsland: { context in
-            // --- 2. DYNAMIC ISLAND TASARIMI (iPhone 14 Pro ve üstü) ---
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
                     Label(String(format: "%.1f km", context.state.totalDistance / 1000.0), systemImage: "flag.fill")

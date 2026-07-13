@@ -4,7 +4,6 @@ import CoreLocation
 import MapKit
 
 struct ContentView: View {
-    // Yazdığımız manager'ları ekrana bağlıyoruz
     @StateObject private var locationManager = LocationManager()
     @StateObject private var weatherManager = WeatherManager()
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
@@ -14,24 +13,21 @@ struct ContentView: View {
     @State private var logoOpacity: Double = 0.0
     @State private var searchTask: Task<Void, Never>? = nil
     @State private var isSearchExpanded: Bool = false
+
     var body: some View {
         ZStack {
-            
             if isActive {
-                
-                // Arka planı koyu yapıyoruz (Gidonda gece/gündüz rahat okunsun)
                 Color.black.ignoresSafeArea()
-                
+
                 VStack(spacing: 15) {
-                    //speed-o-meter
+                    // Hız göstergesi
                     ZStack {
-                        
                         Circle()
-                            .trim(from: 0.15, to: 0.85) // Alttan biraz açık yarım daire formatı
+                            .trim(from: 0.15, to: 0.85)
                             .stroke(Color.gray.opacity(0.2), style: StrokeStyle(lineWidth: 16, lineCap: .round))
-                            .rotationEffect(.init(degrees: 90)) // Kadranı yukarı doğru çevirir
+                            .rotationEffect(.init(degrees: 90))
                             .frame(width: 220, height: 220)
-                        
+
                         Circle()
                             .trim(from: 0.15, to: 0.15 + (0.70 * CGFloat(min(locationManager.speed, 60.0) / 60.0)))
                             .stroke(
@@ -47,7 +43,7 @@ struct ContentView: View {
                                 .font(.system(size: 72, weight: .bold, design: .rounded))
                                 .foregroundColor(.green)
                                 .shadow(color: .green.opacity(0.4), radius: 5)
-                            
+
                             Text("KM/S")
                                 .font(.system(size: 14, weight: .bold, design: .rounded))
                                 .foregroundColor(.gray)
@@ -55,9 +51,8 @@ struct ContentView: View {
                         }
                     }
                     .frame(width: 240, height: 240)
-                    
-                    
-                    //weather
+
+                    // Hava durumu
                     HStack {
                         HStack {
                             Image(systemName: weatherManager.conditionIcon)
@@ -69,29 +64,27 @@ struct ContentView: View {
                     }
                     .foregroundColor(.white)
                     .padding(.horizontal)
-                    
-                    
+
+                    // Trip istatistikleri
                     HStack(alignment: .center) {
-                        // 2. MESAFE SÜTUNU
                         VStack(spacing: 4) {
                             Text("MESAFE")
                                 .font(.system(size: 10, weight: .bold, design: .rounded))
                                 .foregroundColor(.gray)
-                            // Metreyi kilometreye çevirip virgülden sonra tek hane gösteriyoruz (Örn: 1.2 KM)
                             Text(String(format: "%.1f KM", locationManager.totalDistance / 1000.0))
                                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                                 .foregroundColor(.green)
                                 .shadow(color: .green.opacity(0.3), radius: 4)
                         }
-                        
+
                         Spacer()
-                        
+
                         RoundedRectangle(cornerRadius: 1)
                             .fill(Color.gray.opacity(0.3))
                             .frame(width: 1, height: 30)
-                        
+
                         Spacer()
-                        
+
                         VStack(spacing: 4) {
                             Text("ORT. HIZ")
                                 .font(.system(size: 10, weight: .bold, design: .rounded))
@@ -106,14 +99,13 @@ struct ContentView: View {
                     .background(Color.white.opacity(0.03))
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .padding(.horizontal)
-                    
-                    
-                    //MAP------------------------
-                    ZStack(alignment: .topLeading){
+
+                    // Harita
+                    ZStack(alignment: .topLeading) {
                         MapReader { reader in
                             Map(position: $position) {
-                                UserAnnotation{
-                                    ZStack{
+                                UserAnnotation {
+                                    ZStack {
                                         Circle().fill(Color.green.opacity(0.2)).frame(width: 40, height: 40)
                                         Circle().stroke(Color.green, lineWidth: 2)
                                             .frame(width: 26, height: 26)
@@ -125,17 +117,16 @@ struct ContentView: View {
                                             .foregroundColor(Color.green)
                                     }
                                 }
-                                
-                                if !locationManager.remainingRouteCoordinates.isEmpty{
+
+                                if !locationManager.remainingRouteCoordinates.isEmpty {
                                     MapPolyline(coordinates: locationManager.remainingRouteCoordinates)
-                                        .stroke(LinearGradient(colors:[Color.green,Color.cyan],startPoint: .leading, endPoint: .trailing), style: StrokeStyle(
+                                        .stroke(LinearGradient(colors: [Color.green, Color.cyan], startPoint: .leading, endPoint: .trailing), style: StrokeStyle(
                                             lineWidth: 7,
                                             lineCap: .round,
-                                            lineJoin: .round,
-                                            
+                                            lineJoin: .round
                                         ))
-                                    MapPolyline(coordinates:   locationManager.remainingRouteCoordinates)
-                                            .stroke(Color.green.opacity(0.3), lineWidth: 12)
+                                    MapPolyline(coordinates: locationManager.remainingRouteCoordinates)
+                                        .stroke(Color.green.opacity(0.3), lineWidth: 12)
                                 }
                             }
                             .frame(height: 300)
@@ -147,8 +138,6 @@ struct ContentView: View {
                             }
                             .preferredColorScheme(.dark)
                             .onTapGesture { screenPoint in
-                                // Ekranda tam olarak dokunduğun piksel noktasını (screenPoint)
-                                // Harita üzerindeki gerçek dünya koordinatına (enlem/boylam) hatasız çevirir
                                 if let coordinate = reader.convert(screenPoint, from: .local) {
                                     Task {
                                         await locationManager.calculateRoute(to: coordinate)
@@ -156,21 +145,21 @@ struct ContentView: View {
                                 }
                             }
                         }
-                        
-                        //Location Search Bar.
-                        VStyleSearchOverlay()
+
+                        searchOverlay()
                     }
-                    
+
                     Spacer()
-                    
-                    VStack() {
+
+                    // Ses kontrolü
+                    VStack {
                         HStack {
                             Image(systemName: "speaker.wave.1.fill")
                                 .foregroundColor(.green)
-                            
+
                             VolumeSliderView()
-                                .frame(height: 30) // Ses barının yüksekliği
-                            
+                                .frame(height: 30)
+
                             Image(systemName: "speaker.wave.3.fill")
                                 .foregroundColor(.green)
                         }
@@ -179,7 +168,6 @@ struct ContentView: View {
                     .padding()
                     .cornerRadius(20)
                     .padding(.horizontal)
-                    
                 }
                 .padding(.vertical)
                 .onChange(of: locationManager.currentCoordinate?.latitude) { oldValue, newValue in
@@ -189,36 +177,31 @@ struct ContentView: View {
                         }
                     }
                 }
-            }else {
-                
-                // --- AMBLEMATİK AÇILIŞ ANİMASYONU ---
-                Color.black // Arka plan tamamen simsiyah
+            } else {
+                // Açılış animasyonu
+                Color.black
                     .ignoresSafeArea()
-                
+
                 VStack(spacing: 15) {
-                    // Fütüristik Neon Yeşil Bisiklet Logosu
                     Image(systemName: "bicycle")
                         .font(.system(size: 85, weight: .ultraLight))
                         .foregroundColor(.green)
                         .shadow(color: .green.opacity(0.8), radius: 20)
                         .scaleEffect(logoScale)
                         .opacity(logoOpacity)
-                    
-                    // Uygulama İsmi
+
                     Text("BIKEPLAY")
                         .font(.system(size: 28, weight: .black, design: .rounded))
                         .foregroundColor(.white)
-                        .tracking(6) // Harflerin arasını açarak premium hava katıyoruz
+                        .tracking(6)
                         .opacity(logoOpacity)
                 }
                 .onAppear {
-                    // 1. Aşama: Logo ekranda pürüzsüzce büyüyerek belirir
                     withAnimation(.easeOut(duration: 1.2)) {
                         self.logoScale = 1.0
                         self.logoOpacity = 1.0
                     }
-                    
-                    // 2. Aşama: 2.5 saniye sonra ana ekrana pürüzsüz geçiş yapar
+
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                         withAnimation(.easeInOut(duration: 0.5)) {
                             self.isActive = true
@@ -228,7 +211,7 @@ struct ContentView: View {
             }
         }
         .preferredColorScheme(.dark)
-        .onAppear{
+        .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
         }
         .onDisappear {
@@ -240,34 +223,29 @@ struct ContentView: View {
                     .font(.system(.headline, design: .monospaced)),
                 message: Text("See you in other routes next time!"),
                 dismissButton: .default(Text("OK")) {
-                    // Tamam butonuna basınca durumu sıfırlıyoruz ki bir sonraki rotada yine çalışsın
                     locationManager.isRouteCompleted = false
                 }
             )
         }
     }
-    
-    //Search bar Structure
+
     @ViewBuilder
-    private func VStyleSearchOverlay() -> some View {
+    private func searchOverlay() -> some View {
         VStack(spacing: 8) {
-            // 1. ÜSTTEKİ SONUÇ LİSTESİ (Pürüzsüz geçişli hale getirildi)
             if isSearchExpanded && !locationManager.searchResults.isEmpty && !searchQuery.isEmpty {
                 searchResultsList()
             }
-            
-            // 2. ALTTAKİ ARAMA KUTUSU (Klavye takılması engellenen optimize tasarım)
+
             HStack {
                 if isSearchExpanded {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.green)
                         .transition(.opacity)
-                    
+
                     TextField("Search...", text: $searchQuery)
                         .foregroundColor(.white)
                         .autocorrectionDisabled()
                         .transition(.opacity)
-                        // ✅ FIX: Deprecated onChange(of:perform:) → onChange with new signature (iOS 17+)
                         .onChange(of: searchQuery) { _, newValue in
                             searchTask?.cancel()
                             searchTask = Task {
@@ -279,7 +257,7 @@ struct ContentView: View {
                                 }
                             }
                         }
-                    
+
                     Button(action: {
                         searchQuery = ""
                         locationManager.searchResults = []
@@ -291,7 +269,6 @@ struct ContentView: View {
                             .foregroundColor(.gray)
                     }
                     .transition(.scale)
-                    
                 } else {
                     Button(action: {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
@@ -315,12 +292,12 @@ struct ContentView: View {
             )
             .frame(maxWidth: isSearchExpanded ? 280 : 50, alignment: .leading)
         }
-        .padding([.leading], 24).padding([.top],10  )
+        .padding(.leading, 24)
+        .padding(.top, 10)
         .animation(.spring(response: 0.35, dampingFraction: 0.75), value: locationManager.searchResults)
         .animation(.spring(response: 0.35, dampingFraction: 0.75), value: isSearchExpanded)
     }
 
-    // Arama sonuç listesi — büyük body ifadesini bölerek type-check süresini düşürür
     @ViewBuilder
     private func searchResultsList() -> some View {
         ScrollView {
@@ -346,11 +323,9 @@ struct ContentView: View {
         ))
     }
 
-    // Tek bir arama sonucu satırı
     @ViewBuilder
     private func searchResultRow(for item: MKMapItem) -> some View {
         Button(action: {
-            // Modern API: MKMapItem.location (deprecated placemark yerine)
             let coord = item.location.coordinate
             Task {
                 await locationManager.calculateRoute(to: coord)
