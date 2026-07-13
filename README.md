@@ -32,7 +32,10 @@ Sürüş esnasında dikkati dağıtmayacak, karanlık mod (Dark Mode) odaklı ve
 ## 📸 Ekran Görüntüleri
 |UYGULAMA ARAYÜZÜ|SPLASH SCREEN|
 |---|---|
-| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/Ekran%20Resmi%202026-07-12%2006.12.22.png" width= "250"> | <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/Ekran%20Resmi%202026-07-12%2006.12.34.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5970.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5969.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5968.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5956.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5955.png" width = "250">|
+| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5970.png" width = "250">| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/Ekran%20Resmi%202026-07-12%2006.12.34.png" width = "250">
+| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5969.png" width = "250">
+||
+| <img src="https://raw.githubusercontent.com/gok24code/BikePlay-IOS-APP/refs/heads/main/IMG_5968.png" width = "250">
 
 ---
 
@@ -48,7 +51,7 @@ Sürüş esnasında dikkati dağıtmayacak, karanlık mod (Dark Mode) odaklı ve
 
 * **Göktuğ Toyguç** - Computer Engineering Student
 * **GitHub:** [@gok24code](https://github.com/gok24code)
-* **Web:** [gok24code.github.io](https://gok24code.github.io)
+* **Web:** [my portfolio website](https://gok24code.github.io)
 
 ---
 *Bu proje, bisiklet gidonunda Xcode konsolunun "Build Success" sesini duymak ve sürüşü daha akıllı hale getirmek için geliştirilmiştir.*
