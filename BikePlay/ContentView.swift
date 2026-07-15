@@ -2,10 +2,13 @@ import SwiftUI
 import MediaPlayer
 import CoreLocation
 import MapKit
+import SwiftData
+import WidgetKit
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var weatherManager = WeatherManager()
+    @Environment(\.modelContext) private var modelContext
     @State private var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State private var searchQuery: String = ""
     @State private var isActive = false
@@ -226,6 +229,37 @@ struct ContentView: View {
                     locationManager.isRouteCompleted = false
                 }
             )
+        }
+        .onAppear {
+            purgeOldMonthTrips()
+            locationManager.onTripComplete = { date, distance, duration, avgSpeed in
+                let trip = Trip(date: date, distanceMeters: distance, durationSeconds: duration, averageSpeedKmH: avgSpeed)
+                modelContext.insert(trip)
+                try? modelContext.save()
+                WidgetCenter.shared.reloadAllTimelines()
+            }
+        }
+    }
+
+    // Yeni ay başladığında önceki ayın sürüşlerini temizle (aylık sıfırlama)
+    private func purgeOldMonthTrips() {
+        let calendar = Calendar.current
+        let now = Date()
+        let month = calendar.component(.month, from: now)
+        let year = calendar.component(.year, from: now)
+
+        guard let trips = try? modelContext.fetch(FetchDescriptor<Trip>()) else { return }
+        var didChange = false
+        for trip in trips {
+            let comps = calendar.dateComponents([.year, .month], from: trip.date)
+            if comps.year != year || comps.month != month {
+                modelContext.delete(trip)
+                didChange = true
+            }
+        }
+        if didChange {
+            try? modelContext.save()
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
 

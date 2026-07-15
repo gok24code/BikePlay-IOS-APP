@@ -10,6 +10,7 @@ import CoreLocation
 internal import Combine
 @preconcurrency import MapKit
 import ActivityKit
+import SwiftData
 
 @MainActor
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -33,6 +34,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     private var lastRouteUpdateTime = Date()
     private let routeUpdateThrottle: TimeInterval = 0.5
+
+    // Trip kaydetme closure'ü — ContentView'den set edilir
+    var onTripComplete: ((Date, Double, TimeInterval, Double) -> Void)?
 
     override init() {
         super.init()
@@ -182,6 +186,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
             self.remainingRouteCoordinates = []
             self.route = nil
             self.endLiveActivity()
+
+            // Trip'i kaydet
+            onTripComplete?(Date(), totalDistance, elapsedTime, averageSpeed)
         }
     }
 

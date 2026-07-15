@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct BikePlayApp: App {
@@ -16,6 +17,7 @@ struct BikePlayApp: App {
         WindowGroup {
             ContentView().environmentObject(locationManager)
         }
+        .modelContainer(.shared)
         .onChange(of: scenePhase, initial: false) { _, newPhase in
             handleScenePhaseChange(newPhase)
         }

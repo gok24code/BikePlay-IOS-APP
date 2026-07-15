@@ -29,16 +29,30 @@ Sürüş esnasında dikkati dağıtmayacak, karanlık mod (Dark Mode) odaklı ve
 * **Canlı Etkinlikler:** ActivityKit & WidgetKit (Dynamic Island & Lock Screen Support)
 * **Hava Durumu:** OpenMeteo REST API (`URLSession` + async/await)
 * **Ses Kontrolü:** MediaPlayer / `MPVolumeView`
+* **Veri Depolama:** SwiftData (App Group tabanlı paylaşımlı container)
+* **Widget Grafikler:** Swift Charts (çizgi + alan gradyanı)
 * **Tasarım Mimarisi:** MVVM / ObservableObject State Management & ScenePhase Lifecycle Tracking
 
 ---
 
-## 🔧 Son Teknik Güncellemeler
+## 🔧 Son Teknik Güncellemeler (16.07.2026)
 
-* **iOS 26 API Modernizasyonu:** Canlı Etkinlikler artık güncel ActivityKit imzalarıyla çalışıyor — `ActivityContent(state:staleDate:)` ile başlatma/güncelleme ve etiketsiz `update(_:)` / `end(_:)` çağrıları. Rota noktaları ise deprecated `MKPlacemark` yerine yeni `MKMapItem(location:address:)` API'sine taşındı.
-* **Derleyici Performansı:** Arama arayüzü bağımsız alt-View fonksiyonlarına (`searchOverlay`, `searchResultsList`, `searchResultRow`) bölünerek SwiftUI'nin "type-check timeout" hatası giderildi ve build süresi kısaldı.
-* **Kod Temizliği:** Tüm dosyalar gereksiz yorumlardan ve tutarsız isimlendirmelerden arındırıldı; sade, okunabilir ve bakımı kolay bir yapıya kavuşturuldu.
-* **Build Durumu:** iPhone 17 / iOS 26 simülatöründe **0 uyarı, 0 hata**.
+### Sürüş Geçmişi & Widget Sistemi
+* **SwiftData Entegrasyonu:** Trip model ve paylaşımlı App Group container (`ModelContainer.shared`) eklendi. Ana app sürüşü kaydettiğinde veritabanına yazılıyor; aylık döngü otomatik eski veriyi temizliyor.
+* **App Group Kurulumu:** Ana app ve widget extension aynı `group.com.gok24code.bikeplay` App Group'unda çalışıyor — veritabanı paylaşımlı container köküne yerleştirildi, başlangıçtaki CoreData hataları çözüldü.
+* **Çok Boyutlu Widget'lar:** 
+  - 🟩 **Small:** Bugünün toplam kilometresi (dev rakam, hızlı bakış)
+  - 📈 **Medium:** Son 7 günün çizgi grafiği + hafta toplamı
+  - 📅 **Large:** Bu ayın günlük grafiği + toplam km + en iyi gün (Swift Charts)
+
+### iOS 26 API Modernizasyonu
+* **Canlı Etkinlikler:** ActivityKit imzaları güncelendi — `ActivityContent(state:staleDate:)` ile başlatma/güncelleme, etiketsiz `update(_:)` / `end(_:)` çağrıları.
+* **Harita API:** Deprecated `MKPlacemark(coordinate:)` yerine `MKMapItem(location:address:nil)` ile yer işaretleri oluşturuluyor.
+* **Türü Kontrol Zaman Aşımı:** Arama arayüzü (`searchOverlay`, `searchResultsList`, `searchResultRow`) bağımsız View fonksiyonlarına bölünerek compiler type-check timeout hatası çözüldü.
+
+### Kod Kalitesi
+* **Temizlik:** Tüm 11 dosya gereksiz emoji, `✅ FIX`, meta yorumlar ve tutarsız isimlendirmelerden arındırıldı. Production-ready, mülakat seviyesi kod.
+* **Build Durumu:** iPhone 17 / iOS 26 simülatöründe **0 uyarı, 0 hata, temiz derlenme**.
 
 ---
 
@@ -54,8 +68,10 @@ Sürüş esnasında dikkati dağıtmayacak, karanlık mod (Dark Mode) odaklı ve
 
 ## 🏎️ Gelecek Planları (Roadmap)
 
+- [x] **Trip History:** ✅ Yapıldı! Sürüş geçmişi SwiftData ile kaydediliyor, aylık sıfırlama, widget'ta gerçek veri akıyor.
+- [ ] **Manuel Sürüş Kayıt Butonu:** Test kolaylığı için, rota tamamlanmadan sürüşü kaydetme seçeneği.
 - [ ] **ESP32 / Arduino Donanım Entegrasyonu:** Bisikletin batarya yüzdesi, motor sıcaklığı ve tork verilerini Bluetooth (CoreBluetooth) üzerinden ekrana canlı akıtmak.
-- [ ] **Trip History:** Geçmiş sürüş rotalarını ve istatistiklerini yerel veri tabanına (SwiftData/CoreData) kaydedip listelemek.
+- [ ] **Takvim View Seçeneği:** Widget Large boyutunda grafiğin yanında takvim grid'i gösterme tercihini eklemek.
 - [ ] **Akıllı Gece Modu:** Telefonun ışık sensörünü dinleyerek harita ve ekran parlaklığını otomatik optimize eden asistan modu.
 
 ---
@@ -67,4 +83,12 @@ Sürüş esnasında dikkati dağıtmayacak, karanlık mod (Dark Mode) odaklı ve
 * **Web:** [my portfolio website](https://gok24code.github.io)
 
 ---
-*Bu proje, bisiklet gidonunda Xcode konsolunun "Build Success" sesini duymak ve sürüşü daha akıllı hale getirmek için geliştirilmiştir.*
+
+## 📅 Geçmiş
+
+* **16.07.2026:** Trip History, SwiftData entegrasyonu, çok boyutlu widget'lar (small/medium/large), iOS 26 API modernizasyonu, kod temizliği tamamlandı.
+* **14.07.2026:** Live Activities, Dynamic Island, rota tamamlama, hava durumu, ses kontrolü, arama debouncing üretildi.
+
+---
+
+*Bu proje, bisiklet gidonunda Xcode konsolunun "Build Success" sesini duymak ve sürüşü daha akıllı hale getirmek için geliştirilmiştir.* 🚴‍♂️💚
